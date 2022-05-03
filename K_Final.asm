@@ -89,36 +89,31 @@ je Click
 ret
 check endp
 
-sound proc near
-push dx
-mov al,10110110b
-out 43h,al
-mov al,9ah
-out 42h,al
-mov al,4h
-out 43h,al
-in al,61h
-or al,00000011b
-out 61h,al
-pop bx
-call sleep
-in al,61h
-and al,11111100b
-out 61h,al
-ret
-sound endp
 
-sleep proc near
-mov bp,2
-mov si,2q
-delay2:
-dec bp
-nop
-jnz delay2
-dec si
-cmp si,0
-jnz delay2
+sound proc near
+mov dx,500
+mov di,500
+
+;ton0 proc near
+cli
+in al,61h
+or al,3
+out 61h,al
+mov ax,di
+out 42h,al 
+xchg al,ah
+out 42h,al
+mov cx,dx 
+ton01: push cx 
+pop cx
+loop ton01
+in al,61h
+and al,0fch 
+out 61h,al
+sti
 ret
-sleep endp
+;ton0 endp 
+sound endp ; Конец процедуры генерации звука 1
+
 
 end start
